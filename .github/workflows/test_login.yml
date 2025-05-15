@@ -24,21 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install selenium
 
-      - name: Install Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-
-      - name: Install ChromeDriver
-        run: |
-          # Extract only the major version number
-          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+' | head -1)
-          # Get latest compatible chromedriver version for the major Chrome version
-          CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
-          wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/chromedriver
-          sudo chmod +x /usr/local/bin/chromedriver
+    
 
       - name: Run test_login.py
         run: |
