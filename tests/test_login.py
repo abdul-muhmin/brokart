@@ -1,8 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-# Set up WebDriver
-driver = webdriver.Chrome()  # Replace with your desired browser
+from selenium.webdriver.chrome.options import Options
+
+chrome_options = Options()
+chrome_options.add_argument("--headless")  # Run Chrome in headless mode
+chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
+
+driver = webdriver.Chrome(options=chrome_options)
 
 # Navigate to the login page
 driver.get("https://practicetestautomation.com/practice-test-login/")
