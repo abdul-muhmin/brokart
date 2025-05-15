@@ -1,0 +1,21 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+# Initialize the webdriver
+driver = webdriver.Chrome()
+
+# Navigate to the website
+driver.get("https://practicetestautomation.com/practice-test-login/")
+
+# Enter username and password
+driver.find_element(By.ID, "username").send_keys("student")
+driver.find_element(By.ID, "password").send_keys("Password123")
+
+# Click on the Login button
+driver.find_element(By.XPATH, "//button[@type='submit']").click()
+
+# Verify the success message
+assert "Logged In Successfully" in driver.page_source
+
+# Close the browser
+driver.quit()
