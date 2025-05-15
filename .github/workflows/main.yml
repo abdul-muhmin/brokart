@@ -1,21 +1,29 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+name: Run Python Tests
 
-# Initialize the webdriver
-driver = webdriver.Chrome()
+on:
+  workflow_dispatch:   # Manual trigger via API or GitHub UI
+  push:
+    branches:
+      - main          # On push to main branch
 
-# Navigate to the website
-driver.get("https://practicetestautomation.com/practice-test-login/")
+jobs:
+  test:
+    runs-on: ubuntu-latest
 
-# Enter username and password
-driver.find_element(By.ID, "username").send_keys("student")
-driver.find_element(By.ID, "password").send_keys("Password123")
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-# Click on the Login button
-driver.find_element(By.XPATH, "//button[@type='submit']").click()
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
 
-# Verify the success message
-assert "Logged In Successfully" in driver.page_source
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-# Close the browser
-driver.quit()
+      - name: Run test_login.py
+        run: |
+          python tests/test_login.py
