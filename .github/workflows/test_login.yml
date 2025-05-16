@@ -19,7 +19,7 @@ jobs:
         run: |
           pip install selenium
           sudo apt-get update
-          sudo apt-get install -y chromium-driver
+          sudo apt-get install -y chromium-browser chromium-driver
 
       - name: Run Selenium test
         run: python test_login.py
