@@ -1,11 +1,15 @@
-name: Run Login Test
+name: Run Selenium Tests
 
 on:
-  workflow_dispatch:  # allows manual trigger from Actions tab
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -15,12 +19,17 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Install Chrome
+        run: |
+          sudo apt update
+          sudo apt install -y wget
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt install -y ./google-chrome-stable_current_amd64.deb
+
       - name: Install dependencies
         run: |
-          pip install selenium
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser chromium-driver
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run Selenium test
         run: python tests/test_login.py
-        
