@@ -21,7 +21,7 @@ try:
 
     # Step 2: Fill in username and password
     driver.find_element(By.ID, "username").send_keys("student")
-    driver.find_element(By.ID, "password").send_keys("Password123")
+    driver.find_element(By.ID, "password").send_keys("password123")
 
     # Step 3: Click Login
     driver.find_element(By.ID, "submit").click()
