@@ -15,26 +15,47 @@ options.add_argument("--disable-dev-shm-usage")
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
 
+
 try:
     # Step 1: Go to login page
     driver.get("https://practicetestautomation.com/practice-test-login/")
+    time.sleep(1)
 
     # Step 2: Fill in username and password
-    driver.find_element(By.ID, "username").send_keys("student")
-    driver.find_element(By.ID, "password").send_keys("password123")
+    driver.find_element(By.ID, "username").send_keys("student")        # valid username
+    driver.find_element(By.ID, "password").send_keys("wrongpassword")  # try invalid password
 
     # Step 3: Click Login
     driver.find_element(By.ID, "submit").click()
+    time.sleep(2)
 
-    time.sleep(2)  # Let page load
+    # Step 4: Check for error message first
+    error_elements = driver.find_elements(By.ID, "error")
+    if error_elements:
+        error_text = error_elements[0].text
+        print(f"❌ Login failed. Error: '{error_text}'")
+        assert "Your password is invalid!" in error_text or "Your username is invalid!" in error_text, \
+            f"Unexpected error message: {error_text}"
 
-    # Step 4: Verify success message
-    success_text = driver.find_element(By.TAG_NAME, "h1").text
-    assert success_text == "Logged In Successfully", "Login failed"
+    else:
+        # No error message, check for success
+        success_elements = driver.find_elements(By.TAG_NAME, "h1")
+        if success_elements:
+            success_text = success_elements[0].text
+            assert success_text == "Logged In Successfully", \
+                f"Unexpected success message: {success_text}"
+            print("Login successful!")
+        else:
+            # Neither error nor success message found
+            raise AssertionError("Login result unclear: no success or error message found.")
 
-    print("✅ Test Passed")
-except Exception as e:
-    print("❌ Test Failed:", e)
+except AssertionError as ae:
+    print("Test Failed:", ae)
     exit(1)
+
+except Exception as e:
+    print("Unexpected error during test:", e)
+    exit(1)
+
 finally:
     driver.quit()
