@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
+
 @pytest.fixture(scope="module")
 def driver():
     # Setup Chrome options
