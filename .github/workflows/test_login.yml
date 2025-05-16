@@ -22,4 +22,5 @@ jobs:
           sudo apt-get install -y chromium-browser chromium-driver
 
       - name: Run Selenium test
-        run: python test_login.py
+        run: python tests/test_login.py
+        working-directory: brokart
